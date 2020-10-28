@@ -4,8 +4,14 @@
     <form @submit.prevent="login">
       <input v-model="usuario" type="text" placeholder="Usuario" />
       <input v-model="contrasena" type="password" placeholder="Contraseña" />
-      <input type="submit" value="Acceder" />
+      <v-btn type="submit" dark depressed color="indigo accent-2">
+        Acceder
+      </v-btn>
     </form>
+
+    <v-btn @click="logInGoogle" dark depressed color="blue accent-1">
+      Logeate con Gmail
+    </v-btn>
 
     <pre>
       {{ $data }}
@@ -34,6 +40,32 @@ export default {
           },
           (error) => console.error(error)
         );
+    }, //final login
+    logInGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          console.log(result);
+          this.$router.replace("inicio");
+
+          let user = {
+            name: result.user.displayName,
+            photoURL: result.user.providerData[0].photoURL,
+            email: result.user.email,
+          };
+          this.createdUser(user);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, //final log in google
+    createdUser(user) {
+      firebase
+        .firestore()
+        .collection("usuarios")
+        .add(user);
     },
   },
 };
