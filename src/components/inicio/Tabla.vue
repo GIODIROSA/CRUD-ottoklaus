@@ -52,8 +52,45 @@
         <span v-if="!add">Agregar Producto</span>
         <span v-if="add">Quitar Formulario</span>
       </v-btn>
-      <CrearProducto v-if="add" :editarPrueba="editarPrueba" />
-      <EditarProducto :productos="productos" />
+      <div v-if="formAgregar">
+        <CrearProducto v-if="add" />
+      </div>
+      <!-- <EditarProducto :productos="productos" /> -->
+
+      <!-- EDITAR PRODUCTO -->
+      <div v-if="!formAgregar">
+        <v-chip class="ma-2" color="success" label text-color="white">
+          <v-icon left>
+            mdi-label
+          </v-icon>
+          EDITAR PRODUCTO
+        </v-chip>
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-text-field v-model="juguetes.codigo" label="Codigo"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-text-field v-model="juguetes.nombre" label="Nombre"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-text-field v-model="juguetes.stock" label="Stock"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-text-field v-model="juguetes.precio" label="Precio"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-btn color="warning">
+              EDITAR
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!--FINAL EDITAR PRODUCTO -->
+      </div>
+
       <!-- SNACKBAR -->
       <v-snackbar v-model="snackbar">
         {{ mensaje }}
@@ -68,20 +105,27 @@
 
 <script>
 import CrearProducto from "@/components/inicio/CrearProducto.vue";
-import EditarProducto from "@/components/inicio/EditarProducto.vue";
+// import EditarProducto from "@/components/inicio/EditarProducto.vue";
 import { mapMutations, mapState } from "vuex";
 export default {
   name: "Tabla",
   props: ["productos"],
   components: {
     CrearProducto,
-    EditarProducto,
+    // EditarProducto,
   },
   data() {
     return {
       snackbar: false,
       mensaje: "",
+      formAgregar: true,
       productoAEditar: {
+        codigo: "",
+        nombre: "",
+        stock: "",
+        precio: "",
+      },
+       juguetes: {
         codigo: "",
         nombre: "",
         stock: "",
@@ -105,15 +149,21 @@ export default {
     editarPrueba() {
       alert("hola a todos");
     },
-    editar(idProducto) {
-      let productoJuguete = this.productos.find(
-        (prod) => prod.id == idProducto
-      );
-      this.productoAEditar.codigo = producto.data.codigo;
-      this.productoAEditar.nombre = producto.data.nombre;
-      this.productoAEditar.stock = producto.data.stock;
-      this.productoAeditar.id = producto.id;
-    },
+    editar(id){
+      this.formAgregar= false;
+      console.log(id)
+     
+      
+    }
+    // editar(idProducto) {
+    //   let productoJuguete = this.productos.find(
+    //     (prod) => prod.id == idProducto
+    //   );
+    //   this.productoAEditar.codigo = producto.data.codigo;
+    //   this.productoAEditar.nombre = producto.data.nombre;
+    //   this.productoAEditar.stock = producto.data.stock;
+    //   this.productoAeditar.id = producto.id;
+    // },
   },
 };
 </script>
