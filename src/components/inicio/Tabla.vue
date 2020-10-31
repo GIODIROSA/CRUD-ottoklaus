@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>probando la conexion</h1>
     <v-container>
+    <h1 class="tituloSistemaInventario display-3 font-weight-light text-center py-10">Sistema de inventario Otto Klaus</h1>
       <v-simple-table class="tabla" fixed-header>
         <template v-slot:default>
           <thead>
@@ -26,7 +26,15 @@
                   small
                   dark
                   @click.stop="dialog = true"
-                  @click="editar(producto.id)"
+                  @click="
+                    editar(
+                      producto.id,
+                      producto.data.codigo,
+                      producto.data.nombre,
+                      producto.data.stock,
+                      producto.data.precio
+                    )
+                  "
                 >
                   <v-icon dark> mdi-pencil </v-icon>
                 </v-btn>
@@ -48,14 +56,13 @@
         </template>
       </v-simple-table>
       <!-- AGREGAR PRODUCTO -->
-      <v-btn @click="showAdd" depressed>
+      <v-btn dark class="my-5" color="purple lighten-3"  block @click="showAdd" depressed>
         <span v-if="!add">Agregar Producto</span>
         <span v-if="add">Quitar Formulario</span>
       </v-btn>
       <div v-if="formAgregar">
         <CrearProducto v-if="add" />
       </div>
-      <!-- <EditarProducto :productos="productos" /> -->
 
       <!-- EDITAR PRODUCTO -->
       <div v-if="!formAgregar">
@@ -67,23 +74,32 @@
         </v-chip>
         <v-row>
           <v-col cols="12" md="4">
-            <v-text-field v-model="juguetes.codigo" label="Codigo"></v-text-field>
+            <v-text-field
+              v-model="juguetes.data.codigo"
+              label="Codigo"
+            ></v-text-field>
           </v-col>
 
           <v-col cols="12" md="4">
-            <v-text-field v-model="juguetes.nombre" label="Nombre"></v-text-field>
+            <v-text-field
+              v-model="juguetes.data.nombre"
+              label="Nombre"
+            ></v-text-field>
           </v-col>
 
           <v-col cols="12" md="4">
-            <v-text-field v-model="juguetes.stock" label="Stock"></v-text-field>
+            <v-text-field v-model="juguetes.data.stock" label="Stock"></v-text-field>
           </v-col>
 
           <v-col cols="12" md="4">
-            <v-text-field v-model="juguetes.precio" label="Precio"></v-text-field>
+            <v-text-field
+              v-model="juguetes.data.precio"
+              label="Precio"
+            ></v-text-field>
           </v-col>
 
           <v-col cols="12" md="4">
-            <v-btn color="warning">
+            <v-btn color="warning" @click="upJuguete">
               EDITAR
             </v-btn>
           </v-col>
@@ -100,36 +116,32 @@
       </v-snackbar>
       <!-- FINAL DE SNACKBAR -->
     </v-container>
+  
   </div>
 </template>
 
 <script>
 import CrearProducto from "@/components/inicio/CrearProducto.vue";
-// import EditarProducto from "@/components/inicio/EditarProducto.vue";
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Tabla",
   props: ["productos"],
   components: {
     CrearProducto,
-    // EditarProducto,
   },
   data() {
     return {
       snackbar: false,
       mensaje: "",
       formAgregar: true,
-      productoAEditar: {
-        codigo: "",
-        nombre: "",
-        stock: "",
-        precio: "",
-      },
-       juguetes: {
-        codigo: "",
-        nombre: "",
-        stock: "",
-        precio: "",
+
+      juguetes: {
+        data: {
+          codigo: "",
+          nombre: "",
+          stock: "",
+          precio: "",
+        },
       },
     };
   },
@@ -137,7 +149,12 @@ export default {
     ...mapState(["add"]),
   },
   methods: {
+    ...mapActions(["editarProducto"]),
     ...mapMutations(["MostrarAgregar", "MostrarEditar"]),
+
+    upJuguete() {
+      this.editarProducto(this.juguetes);
+    },
     borrar(id) {
       this.$store.dispatch("eliminarjuguete", id);
       (this.snackbar = true),
@@ -146,26 +163,21 @@ export default {
     showAdd() {
       this.MostrarAgregar();
     },
-    editarPrueba() {
-      alert("hola a todos");
+    editar(id, codigo, nombre, stock, precio) {
+      this.formAgregar = false;
+      this.juguetes.id = id;
+      this.juguetes.data.codigo = codigo;
+      this.juguetes.data.nombre = nombre;
+      this.juguetes.data.stock = stock;
+      this.juguetes.data.precio = precio;
+
+      console.log(id);
+      console.log(codigo);
     },
-    editar(id){
-      this.formAgregar= false;
-      console.log(id)
-     
-      
-    }
-    // editar(idProducto) {
-    //   let productoJuguete = this.productos.find(
-    //     (prod) => prod.id == idProducto
-    //   );
-    //   this.productoAEditar.codigo = producto.data.codigo;
-    //   this.productoAEditar.nombre = producto.data.nombre;
-    //   this.productoAEditar.stock = producto.data.stock;
-    //   this.productoAeditar.id = producto.id;
-    // },
   },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+
+</style>

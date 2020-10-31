@@ -6,7 +6,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    jugueteEditar: {},
     productos: [],
     add: true,
   },
@@ -72,13 +71,17 @@ export default new Vuex.Store({
       // agregar al store
       commit("AÑADIR_DATA", juguete);
     },
-  },
-  editarProducto({ commit }, actualizacion) {
-    firebase
-      .firestore()
-      .collection("listado")
-      .doc(actualizacion.id)
-      .update(actualizacion.data);
+    async editarProducto({ commit }, actualizacion) {
+      try {
+        await firebase
+          .firestore()
+          .collection("listado")
+          .doc(actualizacion.id)
+          .update(actualizacion.data);
+      } catch (error) {
+        console.log("hay un error en el edit de juguetes:", error);
+      }
+    },
   },
 
   modules: {},

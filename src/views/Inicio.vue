@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>CUANDO ME LOGUEO ENTRO AQUI</h1>
-
     <!-- tabla -->
     <Tabla :productos="productos" />
 
@@ -10,8 +8,9 @@
       <v-row>
         <v-col>
           <v-btn color="light-blue lighten-1" block>
-            <a href="#" @click="logOut"><span class="white--text">LogOut</span></a>
-            
+            <a href="#" @click="logOut"
+              ><span class="white--text">LogOut</span></a
+            >
           </v-btn>
         </v-col>
       </v-row>

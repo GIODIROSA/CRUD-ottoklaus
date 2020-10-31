@@ -56,9 +56,6 @@
       </v-btn>
     </v-snackbar>
     <!-- FINAL DE SNACKBAR -->
-    <v-btn color="warning" @click="editarPrueba">
-      prueba
-    </v-btn>
   </div>
 </template>
 
@@ -66,7 +63,6 @@
 import { mapActions } from "vuex";
 export default {
   name: "CrearProducto",
-  props: ["editarPrueba"],
   data() {
     return {
       juguetes: {
@@ -106,7 +102,6 @@ export default {
         (this.juguetes.stock = ""),
         (this.juguetes.precio = "");
     },
-    
   },
 };
 </script>

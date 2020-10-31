@@ -1,10 +1,15 @@
 <template>
   <div>
-    <h1>Login</h1>
+    <h1 class="display-3">Iniciar</h1>
     <form @submit.prevent="login">
-      <input v-model="usuario" type="text" placeholder="Usuario" />
-      <input v-model="contrasena" type="password" placeholder="Contraseña" />
-      <v-btn type="submit" dark depressed color="indigo accent-2">
+      <input class=" my-5 py-4" v-model="usuario" type="text" placeholder="Usuario" />
+      <input
+        class="py-3"
+        v-model="contrasena"
+        type="password"
+        placeholder="Contraseña"
+      />
+      <v-btn block class="my-4" type="submit" dark depressed color="indigo accent-2">
         Acceder
       </v-btn>
     </form>
@@ -12,10 +17,6 @@
     <v-btn @click="logInGoogle" dark depressed color="blue accent-1">
       Logeate con Gmail
     </v-btn>
-
-    <pre>
-      {{ $data }}
-    </pre>
   </div>
 </template>
 
