@@ -24,7 +24,6 @@
                 <v-btn
                   color="primary"
                   small
-                  fab
                   dark
                   @click.stop="dialog = true"
                   @click="editar(producto.id)"
@@ -53,7 +52,8 @@
         <span v-if="!add">Agregar Producto</span>
         <span v-if="add">Quitar Formulario</span>
       </v-btn>
-      <CrearProducto v-if="add" />
+      <CrearProducto v-if="add" :editarPrueba="editarPrueba" />
+      <EditarProducto :productos="productos" />
       <!-- SNACKBAR -->
       <v-snackbar v-model="snackbar">
         {{ mensaje }}
@@ -68,24 +68,32 @@
 
 <script>
 import CrearProducto from "@/components/inicio/CrearProducto.vue";
+import EditarProducto from "@/components/inicio/EditarProducto.vue";
 import { mapMutations, mapState } from "vuex";
 export default {
   name: "Tabla",
   props: ["productos"],
   components: {
     CrearProducto,
+    EditarProducto,
   },
   data() {
     return {
       snackbar: false,
       mensaje: "",
+      productoAEditar: {
+        codigo: "",
+        nombre: "",
+        stock: "",
+        precio: "",
+      },
     };
   },
   computed: {
     ...mapState(["add"]),
   },
   methods: {
-    ...mapMutations(["MostrarAgregar"]),
+    ...mapMutations(["MostrarAgregar", "MostrarEditar"]),
     borrar(id) {
       this.$store.dispatch("eliminarjuguete", id);
       (this.snackbar = true),
@@ -93,6 +101,18 @@ export default {
     },
     showAdd() {
       this.MostrarAgregar();
+    },
+    editarPrueba() {
+      alert("hola a todos");
+    },
+    editar(idProducto) {
+      let productoJuguete = this.productos.find(
+        (prod) => prod.id == idProducto
+      );
+      this.productoAEditar.codigo = producto.data.codigo;
+      this.productoAEditar.nombre = producto.data.nombre;
+      this.productoAEditar.stock = producto.data.stock;
+      this.productoAeditar.id = producto.id;
     },
   },
 };

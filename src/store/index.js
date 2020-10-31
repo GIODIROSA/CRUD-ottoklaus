@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    jugueteEditar: {},
     productos: [],
     add: true,
   },
@@ -47,7 +48,7 @@ export default new Vuex.Store({
     },
     async adicionarProducto({ commit }, payload) {
       //payload es el objeto juguete
-      const codigo = payload.codigo.toLowerCase();
+      const codigo = payload.codigo;
       const nombre = payload.nombre.toLowerCase();
       const stock = Number(payload.stock);
       const precio = Number(payload.precio);
@@ -58,7 +59,7 @@ export default new Vuex.Store({
         stock,
         precio,
       };
-      console.log(juguete)
+      console.log(juguete);
       //subirlo al firebase
       try {
         await firebase
@@ -71,6 +72,13 @@ export default new Vuex.Store({
       // agregar al store
       commit("AÑADIR_DATA", juguete);
     },
+  },
+  editarProducto({ commit }, actualizacion) {
+    firebase
+      .firestore()
+      .collection("listado")
+      .doc(actualizacion.id)
+      .update(actualizacion.data);
   },
 
   modules: {},

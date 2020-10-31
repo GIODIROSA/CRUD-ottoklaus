@@ -8,6 +8,7 @@
           </v-icon>
           AGREGAR PRODUCTO
         </v-chip>
+        <!-- AGREGAR PRODUCTO -->
         <v-row>
           <v-col cols="12" md="4">
             <v-text-field
@@ -35,11 +36,16 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <v-btn @click="agregarProducto">
-              Agregar Producto
+            <v-btn
+              dark
+              color="cyan darken-1"
+              @click="agregarProducto(), ClearData()"
+            >
+              AGREGAR PRODUCTO
             </v-btn>
           </v-col>
         </v-row>
+        <!-- FINAL AGREGAR PRODUCTO -->
       </v-container>
     </v-form>
     <!-- SNACKBAR -->
@@ -50,6 +56,9 @@
       </v-btn>
     </v-snackbar>
     <!-- FINAL DE SNACKBAR -->
+    <v-btn color="warning" @click="editarPrueba">
+      prueba
+    </v-btn>
   </div>
 </template>
 
@@ -57,6 +66,7 @@
 import { mapActions } from "vuex";
 export default {
   name: "CrearProducto",
+  props: ["editarPrueba"],
   data() {
     return {
       juguetes: {
@@ -67,13 +77,14 @@ export default {
       },
       snackbar: false,
       mensaje: "",
+      formAgregar: true,
     };
   }, //final de data
   methods: {
     ...mapActions(["adicionarProducto"]),
     agregarProducto() {
       this.adicionarProducto(this.juguetes);
-      this.ClearData();
+
       if (
         this.juguetes.codigo === "" ||
         this.juguetes.nombre === "" ||
@@ -83,6 +94,10 @@ export default {
         console.log("Vacio");
         this.snackbar = true;
         this.mensaje = "El formulario esta vacio";
+      } else {
+        this.ClearData();
+        this.snackbar = true;
+        this.mensaje = "Se agrego un Producto";
       }
     },
     ClearData() {
@@ -91,6 +106,7 @@ export default {
         (this.juguetes.stock = ""),
         (this.juguetes.precio = "");
     },
+    
   },
 };
 </script>
